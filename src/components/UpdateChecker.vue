@@ -111,6 +111,8 @@ const checkForUpdates = async () => {
         // 静默处理取消操作
       })
     }
+    // 如果没有更新，静默处理，不弹窗
+
   } catch (error) {
     // 静默处理所有错误
     console.log('Update check failed:', error)
@@ -161,7 +163,10 @@ onMounted(() => {
   window.electron.ipcRenderer.on('update-error', (error) => {
     showProgress.value = false
     downloadStatus.value = 'exception'
-    console.log('Update error:', error)
+    // 静默处理，不弹窗
+    if (process.env.NODE_ENV === 'development') {
+      console.log('Update error:', error)
+    }
   })
 })
 </script>

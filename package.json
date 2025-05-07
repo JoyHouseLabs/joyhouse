@@ -1,6 +1,6 @@
 {
-  "name": "@joyhouse/main-vue",
-  "version": "0.0.2",
+  "name": "@joyhouse/main",
+  "version": "0.0.3",
   "private": true,
   "main": "electron/main.js",
   "description": "JoyHouse - A modern game platform",
@@ -44,7 +44,7 @@
     "vue-tsc": "^1.8.5"
   },
   "build": {
-    "appId": "com.joyhouse.app",
+    "appId": "com.joyhouselabs.client",
     "productName": "JoyHouse",
     "directories": {
       "output": "dist_electron"
