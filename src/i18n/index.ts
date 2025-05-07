@@ -8,6 +8,8 @@ const enUS = (enUSRaw as any).default || enUSRaw
 
 console.log('Initializing i18n...')
 console.log('Loading language packs:', { zhCN, enUS })
+console.log('enUS content:', enUS)
+console.log('zhCN content:', zhCN)
 
 type SupportedLocales = 'zh-CN' | 'en-US'
 
@@ -55,6 +57,7 @@ const i18n = createI18n({
 console.log('i18n instance created with locale:', i18n.global.locale.value)
 console.log('Available messages:', Object.keys(i18n.global.messages.value))
 console.log('Current messages:', i18n.global.messages.value[i18n.global.locale.value])
+console.log('Final i18n messages:', i18n.global.messages.value)
 
 // 切换语言
 export async function setLanguage(lang: SupportedLocales) {
@@ -71,4 +74,10 @@ export async function setLanguage(lang: SupportedLocales) {
   }
 }
 
-export default i18n 
+export default i18n
+
+// 挂载到 window 便于全局调试
+if (typeof window !== 'undefined') {
+  // @ts-ignore
+  window.i18n = i18n
+}

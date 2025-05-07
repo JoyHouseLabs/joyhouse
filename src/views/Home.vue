@@ -36,6 +36,7 @@ import { storeToRefs } from 'pinia'
 import { onMounted, onUnmounted, onBeforeMount } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
+import i18n from '../i18n'
 
 const { t } = useI18n()
 const router = useRouter()
@@ -45,6 +46,16 @@ const { gameStatus } = storeToRefs(appStore)
 onBeforeMount(() => {
   console.log('Home component before mount')
   console.log('Current locale:', t('home.welcome'))
+  // 直接访问全局 i18n 进行调试
+  // @ts-ignore
+  if (typeof window !== 'undefined' && (window as any).i18n) {
+    // @ts-ignore
+    console.log('window.i18n.global.t(home.welcome):', (window as any).i18n.global.t('home.welcome'))
+    // @ts-ignore
+    console.log('window.i18n.global.messages:', (window as any).i18n.global.messages.value)
+  } else {
+    console.log('window.i18n not found')
+  }
 })
 
 const startGame = () => {
@@ -69,6 +80,26 @@ onMounted(() => {
   console.log('Home component mounted')
   console.log('Current route:', router.currentRoute.value)
   console.log('Current welcome text:', t('home.welcome'))
+  // 直接访问全局 i18n 进行调试
+  // @ts-ignore
+  if (typeof window !== 'undefined' && (window as any).i18n) {
+    // @ts-ignore
+    console.log('window.i18n.global.t(home.welcome):', (window as any).i18n.global.t('home.welcome'))
+    // @ts-ignore
+    console.log('window.i18n.global.messages:', (window as any).i18n.global.messages.value)
+  } else {
+    console.log('window.i18n not found')
+  }
+  // 直接用全局 i18n 实例测试
+  // @ts-ignore
+  if (i18n && i18n.global) {
+    // @ts-ignore
+    console.log('i18n.global.t(home.welcome):', i18n.global.t('home.welcome'))
+    // @ts-ignore
+    console.log('i18n.global.messages:', i18n.global.messages.value)
+  } else {
+    console.log('i18n.global not found')
+  }
   try {
     // 初始化游戏场景
     appStore.setCurrentScene('MainScene')
