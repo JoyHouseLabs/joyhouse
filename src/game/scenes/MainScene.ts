@@ -7,7 +7,7 @@ export class MainScene extends Phaser.Scene {
 
   preload() {
     // 加载游戏资源
-    this.load.image('logo', 'assets/phaser-logo.png')
+    this.load.image('logo', './assets/logo.png')
   }
 
   create() {
@@ -36,7 +36,12 @@ const config: Phaser.Types.Core.GameConfig = {
   width: 800,
   height: 600,
   scene: MainScene,
-  parent: 'game-container'
+  parent: 'game-container',
+  backgroundColor: '#2d2d2d',
+  scale: {
+    mode: Phaser.Scale.FIT,
+    autoCenter: Phaser.Scale.CENTER_BOTH
+  }
 }
 
 // 创建游戏实例

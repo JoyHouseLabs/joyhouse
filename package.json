@@ -1,6 +1,6 @@
 {
   "name": "@joyhouse/main-vue",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "private": true,
   "main": "electron/main.js",
   "description": "JoyHouse - A modern game platform",
@@ -55,7 +55,7 @@
     ],
     "publish": {
       "provider": "github",
-      "owner": "your-github-username",
+      "owner": "JoyHouseLabs",
       "repo": "joyhouse"
     },
     "mac": {

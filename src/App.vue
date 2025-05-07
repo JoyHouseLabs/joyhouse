@@ -4,7 +4,11 @@
     <UpdateChecker />
     <ErrorAlert />
     <LoadingSpinner />
-    <router-view />
+    <router-view v-slot="{ Component }">
+      <transition name="fade" mode="out-in">
+        <component :is="Component" />
+      </transition>
+    </router-view>
   </div>
 </template>
 
@@ -19,10 +23,12 @@ import { onMounted } from 'vue'
 const appStore = useAppStore()
 
 onMounted(() => {
+  console.log('App mounted')
   // 模拟加载状态
   appStore.setLoading(true)
   setTimeout(() => {
     appStore.setLoading(false)
+    console.log('App loading completed')
   }, 1000)
 })
 </script>
@@ -32,6 +38,7 @@ onMounted(() => {
   width: 100%;
   height: 100vh;
   overflow: hidden;
+  position: relative;
 }
 
 .app-container {

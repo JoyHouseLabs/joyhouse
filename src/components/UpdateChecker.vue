@@ -6,13 +6,13 @@
       :loading="checking"
       @click="checkForUpdates"
     >
-      {{ t('update.check') }}
+      {{ $t('update.check') }}
     </el-button>
 
     <!-- 更新进度对话框 -->
     <el-dialog
       v-model="showProgress"
-      :title="t('update.progress.title')"
+      :title="$t('update.progress.title')"
       width="400px"
       :close-on-click-modal="false"
       :close-on-press-escape="false"
@@ -24,11 +24,11 @@
           :status="downloadStatus"
         />
         <div class="progress-info">
-          <span>{{ t('update.progress.downloaded') }}: {{ formatSize(downloadedBytes) }}</span>
-          <span>{{ t('update.progress.total') }}: {{ formatSize(totalBytes) }}</span>
+          <span>{{ $t('update.progress.downloaded') }}: {{ formatSize(downloadedBytes) }}</span>
+          <span>{{ $t('update.progress.total') }}: {{ formatSize(totalBytes) }}</span>
         </div>
         <div class="progress-speed">
-          {{ t('update.progress.speed') }}: {{ formatSpeed(downloadSpeed) }}
+          {{ $t('update.progress.speed') }}: {{ formatSpeed(downloadSpeed) }}
         </div>
       </div>
     </el-dialog>
@@ -50,25 +50,27 @@ const downloadStatus = ref('')
 const downloadedBytes = ref(0)
 const totalBytes = ref(0)
 const downloadSpeed = ref(0)
-const loading = ref(false)
 
 // 检查是否在 Electron 环境中
 const isElectron = ref(false)
 
 // 检查更新
 const checkForUpdates = async () => {
+  if (checking.value) return
+  
   try {
-    loading.value = true
+    checking.value = true
+    
     // 检查是否在开发环境
     const isDev = import.meta.env.DEV
     if (isDev) {
-      console.log('开发环境: 模拟更新检查')
+      console.log(t('update.devMode'))
       // 模拟更新检查
       await new Promise(resolve => setTimeout(resolve, 1000))
       const hasUpdate = Math.random() > 0.5
       if (hasUpdate) {
         ElMessageBox.confirm(
-          t('update.available') + ' v2.0.0\n' + t('updateLog.title') + ':\n1. ' + t('update.newFeatures') + '\n2. ' + t('update.bugFixes'),
+          `${t('update.available')} v2.0.0\n${t('updateLog.title')}:\n1. ${t('update.newFeatures')}\n2. ${t('update.bugFixes')}`,
           t('update.title'),
           {
             confirmButtonText: t('update.install'),
@@ -78,25 +80,25 @@ const checkForUpdates = async () => {
         ).then(() => {
           ElMessage.success(t('update.success'))
         }).catch(() => {
-          ElMessage.info(t('update.cancelled'))
+          // 静默处理取消操作
         })
-      } else {
-        ElMessage.success(t('update.latest'))
       }
       return
     }
 
     // 生产环境使用实际的更新检查
     if (!window.electron?.ipcRenderer) {
-      console.warn('当前环境不支持自动更新')
-      ElMessage.warning(t('update.notSupported'))
       return
     }
 
     const result = await window.electron.ipcRenderer.invoke('check-for-updates')
+    if (!result) {
+      return
+    }
+
     if (result.hasUpdate) {
       ElMessageBox.confirm(
-        `${t('update.available')} v${result.version}\n${result.releaseNotes}`,
+        `${t('update.available')} v${result.version}\n${result.releaseNotes || t('update.noReleaseNotes')}`,
         t('update.title'),
         {
           confirmButtonText: t('update.install'),
@@ -106,22 +108,21 @@ const checkForUpdates = async () => {
       ).then(() => {
         window.electron.ipcRenderer.send('start-update')
       }).catch(() => {
-        ElMessage.info(t('update.cancelled'))
+        // 静默处理取消操作
       })
-    } else {
-      ElMessage.success(t('update.latest'))
     }
   } catch (error) {
-    console.error(t('update.error'), error)
-    ElMessage.error(t('update.error'))
+    // 静默处理所有错误
+    console.log('Update check failed:', error)
+    checking.value = false
   } finally {
-    loading.value = false
+    checking.value = false
   }
 }
 
 // 格式化文件大小
 const formatSize = (bytes) => {
-  if (bytes === 0) return '0 B'
+  if (!bytes || bytes === 0) return '0 B'
   const k = 1024
   const sizes = ['B', 'KB', 'MB', 'GB']
   const i = Math.floor(Math.log(bytes) / Math.log(k))
@@ -139,16 +140,15 @@ onMounted(() => {
   isElectron.value = !!(window.electron?.ipcRenderer)
   
   if (!isElectron.value) {
-    console.log('非 Electron 环境,跳过更新检查功能')
     return
   }
 
   window.electron.ipcRenderer.on('download-progress', (progressObj) => {
     showProgress.value = true
-    downloadProgress.value = Math.round(progressObj.percent)
-    downloadedBytes.value = progressObj.transferred
-    totalBytes.value = progressObj.total
-    downloadSpeed.value = progressObj.bytesPerSecond
+    downloadProgress.value = Math.round(progressObj.percent || 0)
+    downloadedBytes.value = progressObj.transferred || 0
+    totalBytes.value = progressObj.total || 0
+    downloadSpeed.value = progressObj.bytesPerSecond || 0
     downloadStatus.value = 'active'
   })
 
@@ -158,9 +158,10 @@ onMounted(() => {
     downloadStatus.value = 'success'
   })
 
-  window.electron.ipcRenderer.on('update-error', () => {
+  window.electron.ipcRenderer.on('update-error', (error) => {
     showProgress.value = false
     downloadStatus.value = 'exception'
+    console.log('Update error:', error)
   })
 })
 </script>

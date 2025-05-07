@@ -44,7 +44,7 @@ const releases = ref([])
 // 获取更新日志
 const fetchReleases = async () => {
   try {
-    const response = await fetch('https://api.github.com/repos/your-github-username/joyhouse/releases')
+    const response = await fetch('https://api.github.com/repos/JoyHouseLabs/joyhouse/releases')
     releases.value = await response.json()
   } catch (error) {
     console.error(t('updateLog.fetchError'), error)

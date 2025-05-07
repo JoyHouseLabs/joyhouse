@@ -15,6 +15,12 @@ export default {
       loading: 'Switching language...'
     }
   },
+  home: {
+    welcome: 'Welcome to JoyHouse',
+    startGame: 'Start Game',
+    pauseGame: 'Pause Game',
+    resumeGame: 'Resume Game'
+  },
   update: {
     check: 'Check for Updates',
     checking: 'Checking...',
@@ -23,13 +29,14 @@ export default {
     downloaded: 'Update downloaded',
     install: 'Install now?',
     error: 'Update failed',
-    title: 'Update Available',
-    success: 'Update successful',
+    title: 'Update Notification',
+    latest: 'You are using the latest version',
     cancelled: 'Update cancelled',
-    latest: 'Already up to date',
-    notSupported: 'Auto update not supported in current environment',
-    newFeatures: 'New features',
-    bugFixes: 'Bug fixes',
+    success: 'Update successful',
+    notSupported: 'Auto-update not supported in this environment',
+    noReleaseNotes: 'No release notes available',
+    devMode: 'Development mode: Simulating update check',
+    skipCheck: 'Non-Electron environment, skipping update check',
     progress: {
       title: 'Updating',
       downloaded: 'Downloaded',
@@ -41,6 +48,8 @@ export default {
     title: 'Update Log',
     published: 'Published',
     download: 'Download',
-    fetchError: 'Failed to fetch update log'
+    fetchError: 'Failed to fetch update log',
+    newFeatures: 'New Features',
+    bugFixes: 'Bug Fixes'
   }
 } 

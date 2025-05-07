@@ -20,7 +20,7 @@ autoUpdater.logger = log
 // 配置更新服务器
 autoUpdater.setFeedURL({
   provider: 'github',
-  owner: 'your-github-username',
+  owner: 'JoyHouseLabs',
   repo: 'joyhouse',
   token: process.env.GH_TOKEN
 })

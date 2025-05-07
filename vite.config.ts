@@ -4,7 +4,7 @@ import path from 'path'
 
 export default defineConfig({
   plugins: [vue()],
-  base: process.env.NODE_ENV === 'development' ? '/' : './',
+  base: './',
   server: {
     port: 3000,
     cors: true
@@ -15,15 +15,22 @@ export default defineConfig({
     outDir: 'dist',
     assetsDir: 'assets',
     emptyOutDir: true,
+    sourcemap: true,
+    chunkSizeWarningLimit: 1500,
     rollupOptions: {
       input: {
         main: path.resolve(__dirname, 'index.html')
       },
       output: {
         manualChunks: {
-          'element-plus': ['element-plus'],
-          'vue-vendor': ['vue', 'vue-router', 'pinia', 'vue-i18n']
-        }
+          'vue-core': ['vue'],
+          'vue-runtime': ['vue-router', 'pinia', 'vue-i18n'],
+          'element-plus': ['element-plus', '@element-plus/icons-vue'],
+          'game': ['phaser']
+        },
+        chunkFileNames: 'assets/[name]-[hash].js',
+        entryFileNames: 'assets/[name]-[hash].js',
+        assetFileNames: 'assets/[name]-[hash].[ext]'
       }
     }
   },
@@ -31,5 +38,16 @@ export default defineConfig({
     alias: {
       '@': path.resolve(__dirname, 'src')
     }
-  }
+  },
+  optimizeDeps: {
+    include: [
+      'vue',
+      'vue-router',
+      'pinia',
+      'vue-i18n',
+      'element-plus',
+      '@element-plus/icons-vue'
+    ]
+  },
+  publicDir: 'public'
 }) 

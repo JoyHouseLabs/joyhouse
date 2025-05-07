@@ -1,27 +1,38 @@
-import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
+import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
 import Home from '../views/Home.vue'
+
+console.log('Initializing router...')
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
     name: 'Home',
-    component: Home
-  },
-  {
-    path: '/sub-react',
-    name: 'SubReact',
-    component: () => import('../views/SubReact.vue')
-  },
-  {
-    path: '/sub-vue',
-    name: 'SubVue',
-    component: () => import('../views/SubVue.vue')
+    component: Home,
+    meta: {
+      requiresAuth: false
+    }
   }
 ]
 
+console.log('Routes configured:', routes)
+
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHashHistory(),
   routes
+})
+
+console.log('Router instance created')
+
+// 添加导航守卫
+router.beforeEach((to, from, next) => {
+  console.log('Route change:', { from: from.path, to: to.path })
+  console.log('Route component:', to.matched[0]?.components?.default)
+  next()
+})
+
+router.afterEach((to) => {
+  console.log('Route changed to:', to.path)
+  console.log('Current route component:', to.matched[0]?.components?.default)
 })
 
 export default router 
