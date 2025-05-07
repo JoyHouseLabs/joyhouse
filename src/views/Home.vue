@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <div class="content">
-      <h1>{{ t('home.welcome') }}222</h1>
+      <h1>{{ t('home.welcome') }}</h1>
       <div class="game-controls">
         <button 
           v-if="gameStatus === 'idle'" 
@@ -25,8 +25,8 @@
           {{ t('home.resumeGame') }}
         </button>
       </div>
-    </div>
-    <div id="game-container"></div>
+    </div>   
+     <div id="game-container"></div>
   </div>
 </template>
 
@@ -37,6 +37,10 @@ import { onMounted, onUnmounted, onBeforeMount } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 import i18n from '../i18n'
+import Phaser from 'phaser'
+import { config as phaserConfig } from '../game/scenes/MainScene'
+
+let game: Phaser.Game | null = null;
 
 const { t } = useI18n()
 const router = useRouter()
@@ -67,16 +71,26 @@ const startGame = () => {
 const pauseGame = () => {
   console.log('Pausing game')
   appStore.setGameStatus('paused')
-  // 这里可以添加游戏暂停逻辑
+  if (game) {
+    game.scene.pause('MainScene')
+    console.log('Phaser MainScene paused')
+  }
 }
 
 const resumeGame = () => {
   console.log('Resuming game')
   appStore.setGameStatus('playing')
-  // 这里可以添加游戏继续逻辑
+  if (game) {
+    game.scene.resume('MainScene')
+    console.log('Phaser MainScene resumed')
+  }
 }
 
 onMounted(() => {
+  if (!game) {
+    game = new Phaser.Game(phaserConfig)
+  }
+
   console.log('Home component mounted')
   console.log('Current route:', router.currentRoute.value)
   console.log('Current welcome text:', t('home.welcome'))
@@ -110,6 +124,11 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
+  if (game) {
+    game.destroy(true)
+    game = null
+  }
+
   console.log('Home component unmounted')
   // 清理游戏资源
   appStore.setGameStatus('idle')
@@ -173,14 +192,6 @@ h1 {
 
 #game-container {
   width: 100%;
-  max-width: 800px;
-  height: 600px;
-  margin: 2rem auto;
-  position: relative;
-  z-index: 1;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  overflow: hidden;
-  background-color: #2d2d2d;
+
 }
 </style> 

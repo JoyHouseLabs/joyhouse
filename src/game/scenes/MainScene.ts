@@ -31,7 +31,7 @@ export class MainScene extends Phaser.Scene {
 }
 
 // 创建游戏配置
-const config: Phaser.Types.Core.GameConfig = {
+export const config: Phaser.Types.Core.GameConfig = {
   type: Phaser.AUTO,
   width: 800,
   height: 600,
@@ -43,6 +43,3 @@ const config: Phaser.Types.Core.GameConfig = {
     autoCenter: Phaser.Scale.CENTER_BOTH
   }
 }
-
-// 创建游戏实例
-new Phaser.Game(config) 
