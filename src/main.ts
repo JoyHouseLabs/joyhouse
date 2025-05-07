@@ -12,7 +12,6 @@ console.log('Starting application initialization...')
 // 创建应用实例
 const app = createApp(App)
 console.log('Vue app instance created')
-
 // 错误处理
 app.config.errorHandler = (err, vm, info) => {
   console.error('Vue Error:', err)

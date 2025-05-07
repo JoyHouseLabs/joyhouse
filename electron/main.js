@@ -105,7 +105,16 @@ autoUpdater.on('error', (err) => {
   dialog.showErrorBox('更新错误', err.message)
 })
 
+// 集成本地 Express+TypeORM 服务
+const { startServer } = require('./start-server')
+
 app.whenReady().then(() => {
+  // 启动本地服务（仅启动一次）
+  if (!global.__serverStarted) {
+    startServer()
+    global.__serverStarted = true
+  }
+
   createWindow()
   
   // 检查更新

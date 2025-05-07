@@ -1,0 +1,39 @@
+dbType: sqlite    # 可选：sqlite、postgres 或 mysql
+dbName: joyhouse.db # SQLite 文件名或 Postgres/MySQL 数据库名
+dbHost: localhost # Postgres/MySQL 主机名
+dbPort: 5432      # Postgres/MySQL 端口
+dbUser: postgres  # Postgres/MySQL 用户名
+dbPass: password  # Postgres/MySQL 密码
+serverHost: 127.0.0.1 # 服务器监听的IP
+serverPort: 3010      # 服务器监听的端口
+
+# HTTPS 配置（可选）
+https:
+  enabled: false      # true 启用 https
+  key: ./ssl/key.pem  # 私钥路径
+  cert: ./ssl/cert.pem # 证书路径
+
+# CORS 配置（可选）
+cors:
+  enabled: true
+  origin: "*"         # 允许的来源，* 表示全部
+  credentials: false   # 是否允许携带凭证
+
+# 静态资源目录（可选）
+staticDir: ./public   # 静态资源目录（相对 server 目录）
+
+# API 鉴权配置（可选）
+apiAuth:
+  enabled: true
+  token: "your-secret-token" # 推荐设置为复杂随机字符串
+
+# 日志配置（可选）
+log:
+  level: info        # 支持 info、warn、error、debug
+  file: ./server.log # 日志文件路径（相对 server 目录）
+
+# 限流配置（可选）
+rateLimit:
+  enabled: true
+  windowMs: 60000     # 时间窗口，单位毫秒（如1分钟）
+  max: 100            # 单窗口最大请求数
