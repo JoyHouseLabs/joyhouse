@@ -1,6 +1,6 @@
 {
   "name": "@joyhouse/main",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "private": true,
   "main": "electron/main.js",
   "description": "JoyHouse - A modern game platform",
@@ -22,8 +22,9 @@
   "dependencies": {
     "@element-plus/icons-vue": "^2.3.1",
     "electron-log": "^5.4.0",
-    "electron-store": "^8.1.0",
     "electron-updater": "^6.1.7",
+    "builder-util-runtime": "^9.3.1",
+    "electron-store": "^8.1.0",
     "element-plus": "^2.9.9",
     "phaser": "^3.60.0",
     "pinia": "^2.1.6",
