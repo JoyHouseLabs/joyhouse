@@ -1,6 +1,6 @@
 {
   "name": "@joyhouse/main-vue",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "private": true,
   "main": "electron/main.js",
   "description": "JoyHouse - A modern game platform",
