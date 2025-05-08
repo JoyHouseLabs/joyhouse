@@ -1,5 +1,6 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
 import Home from '../views/Home.vue'
+const Login = () => import('../views/Login.vue')
 
 console.log('Initializing router...')
 
@@ -8,10 +9,15 @@ const routes: Array<RouteRecordRaw> = [
     path: '/',
     name: 'Home',
     component: Home,
-    meta: {
-      requiresAuth: false
-    }
-  }
+    meta: { requiresAuth: false }
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: Login,
+    meta: { requiresAuth: false }
+  },
+   
 ]
 
 console.log('Routes configured:', routes)

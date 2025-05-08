@@ -1,5 +1,5 @@
 <template>
-  <div class="app">
+  <div class="app"> 
     <LanguageSwitcher />
     <UpdateChecker />
     <ErrorAlert />
@@ -34,47 +34,22 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.app {
-  width: 100%;
-  height: 100vh;
-  overflow: hidden;
-  position: relative;
+html,
+body {
+  margin: 0;
+  color-scheme: light;
+  font-family: "Inter", "NotoSansSC", sans-serif, monospace;
+  font-weight: 500;
+  color: rgb(10, 10, 10);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  box-sizing: border-box;
+  overflow: auto;
+  overflow-x: scroll;
+  height: 100%
 }
 
-.app-container {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-}
-
-.nav-menu {
-  padding: 1rem;
-  background: #f5f5f5;
-}
-
-.nav-menu a {
-  margin-right: 1rem;
-  text-decoration: none;
-  color: #333;
-}
-
-.nav-menu a.router-link-active {
-  color: #42b983;
-  font-weight: bold;
-}
-
-.content {
-  flex: 1;
-  padding: 1rem;
-}
-
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.3s ease;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
+#app {
+  @apply w-full flex flex-col h-full;
 }
 </style> 
